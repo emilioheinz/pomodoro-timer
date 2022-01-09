@@ -44,19 +44,21 @@ export function useCountdownTimer(onEndReachCallback?: () => void) {
   }
 
   function pause() {
-    if (counterInterval) {
-      clearInterval(counterInterval)
-      setIsTimerRunning(false)
-    }
+    setIsTimerRunning(false)
+
+    if (!counterInterval) return
+
+    clearInterval(counterInterval)
   }
 
   function reset() {
-    if (counterInterval) {
-      clearInterval(counterInterval)
-      setCounterInterval(null)
-      setTimeLeft(startTimeInMs)
-      setIsTimerRunning(false)
-    }
+    setCounterInterval(null)
+    setTimeLeft(startTimeInMs)
+    setIsTimerRunning(false)
+
+    if (!counterInterval) return
+
+    clearInterval(counterInterval)
   }
 
   function setStartTime(duration: number) {

@@ -1,12 +1,13 @@
 import { ButtonContainer, Label } from './styles'
+import { ButtonPropTypes, ButtonTypes } from './types'
 
-interface ButtonPropTypes {
-  label: string
-}
-
-export default function Button({ label }: ButtonPropTypes) {
+export default function Button({
+  label,
+  onClick,
+  type = ButtonTypes.solid
+}: ButtonPropTypes) {
   return (
-    <ButtonContainer>
+    <ButtonContainer buttonType={type} onClick={onClick}>
       <Label>{label}</Label>
     </ButtonContainer>
   )

@@ -40,7 +40,7 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <link
-            href="https://fonts.googleapis.com/css?family=Roboto:400,500,700"
+            href="https://fonts.googleapis.com/css?family=Roboto"
             rel="stylesheet"
           />
           {/* Todo emilioheinz: Add fivicon */}

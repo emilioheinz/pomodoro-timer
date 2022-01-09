@@ -1,18 +1,33 @@
 import styled from 'styled-components'
+import { ButtonTypes } from './types'
 
-export const ButtonContainer = styled.button`
-  border: none;
+export const ButtonContainer = styled.button<{ buttonType: ButtonTypes }>`
+  width: 100%;
+  max-width: 350px;
+
   outline: none;
-  background: ${props => props.theme.colors.primary};
+  background: ${props =>
+    props.buttonType === ButtonTypes.solid
+      ? props.theme.colors.primary
+      : 'transparent'};
+  border: ${props => `2px solid ${props.theme.colors.primary}`};
+
   padding: 20px;
-  margin: 15px;
+  margin: 10px;
   border-radius: 30px;
-  display: flex;
-  flex-basis: 350px;
-  justify-content: center;
+
+  :hover {
+    cursor: pointer;
+  }
+
+  span {
+    color: ${props =>
+      props.buttonType === ButtonTypes.solid
+        ? props.theme.colors.textOnPrimary
+        : props.theme.colors.textOnBackground};
+  }
 `
 export const Label = styled.span`
-  color: ${props => props.theme.colors.textOnPrimary};
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 18px;
