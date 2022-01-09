@@ -26,6 +26,13 @@
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "quotes": "error",
-    "jsx-quotes": "error"
+    "jsx-quotes": "error",
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": true,
+        "html": true
+      }
+    ]
   }
 }
