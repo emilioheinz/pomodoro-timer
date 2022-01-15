@@ -3,7 +3,7 @@ export enum ButtonTypes {
   outlined
 }
 
-export interface ButtonPropTypes {
+export type ButtonPropTypes = {
   label: string
   onClick: () => void
   type?: ButtonTypes

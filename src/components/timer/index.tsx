@@ -1,13 +1,29 @@
-import { Container, Time } from './styles'
+import { useEffect } from 'react'
+import { FaPlay, FaStop } from 'react-icons/fa'
+import { useCountdownTimer } from '~/hooks/use-count-down-timer'
+import { IconButton } from '../icon-button'
+import { Container, TimeWrapper } from './styles'
 
-interface TimerPropTypes {
-  timeLeft: string
-}
+export default function Timer() {
+  const { formattedTimeLeft, isTimerRunning, setStartTime, start, reset } =
+    useCountdownTimer()
 
-export default function Timer({ timeLeft = '00:00' }: TimerPropTypes) {
+  useEffect(() => {
+    setStartTime(100000)
+  }, [])
+
+  function renderButton() {
+    if (isTimerRunning) return <IconButton Icon={FaStop} onClick={reset} />
+
+    return <IconButton Icon={FaPlay} onClick={start} />
+  }
+
   return (
     <Container>
-      <Time>{timeLeft}</Time>
+      <TimeWrapper>
+        <span>{formattedTimeLeft}</span>
+      </TimeWrapper>
+      {renderButton()}
     </Container>
   )
 }

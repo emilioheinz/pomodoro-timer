@@ -21,10 +21,7 @@ export const ButtonContainer = styled.button<{ buttonType: ButtonTypes }>`
   }
 
   span {
-    color: ${props =>
-      props.buttonType === ButtonTypes.solid
-        ? props.theme.colors.textOnPrimary
-        : props.theme.colors.textOnBackground};
+    color: ${props => props.theme.colors.text};
   }
 `
 export const Label = styled.span`

@@ -1,19 +1,12 @@
 import Head from 'next/head'
 import { useEffect } from 'react'
-import Button from '~/components/button'
-import { ButtonTypes } from '~/components/button/types'
+import { IconButton } from '~/components/icon-button'
+import { FaPlay, FaPause, FaStop } from 'react-icons/fa'
 import Timer from '~/components/timer'
 import { useCountdownTimer } from '~/hooks/use-count-down-timer'
-import { Container } from '~/styles/pages/home'
+import { ButtonsContainer, Container } from '~/styles/pages/home'
 
 export default function Home() {
-  const { formattedTimeLeft, isTimerRunning, setStartTime, start, reset } =
-    useCountdownTimer()
-
-  useEffect(() => {
-    setStartTime(100000)
-  }, [])
-
   return (
     <div>
       <Head>
@@ -22,12 +15,7 @@ export default function Home() {
 
       <main>
         <Container>
-          <Timer timeLeft={formattedTimeLeft} />
-          <Button
-            label={isTimerRunning ? 'Parar' : 'Começar'}
-            onClick={isTimerRunning ? reset : start}
-            type={isTimerRunning ? ButtonTypes.outlined : ButtonTypes.solid}
-          />
+          <Timer />
         </Container>
       </main>
     </div>
