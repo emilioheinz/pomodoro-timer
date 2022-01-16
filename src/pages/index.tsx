@@ -2,6 +2,8 @@ import Head from 'next/head'
 import { useCallback, useEffect, useState } from 'react'
 import RangeSlider from '~/components/range-slider'
 import Timer from '~/components/timer'
+import { makeFocusTask } from '~/factories/focust-task'
+import { makeRestTask } from '~/factories/rest-task'
 
 import {
   Container,
@@ -27,33 +29,21 @@ export default function Home() {
 
   useEffect(() => {
     setCurrentTask(task => {
-      if (task.type === TasksTypes.rest) {
-        return {
-          type: TasksTypes.rest,
-          duration: restTime
-        }
-      }
+      const isUserResting = task.type === TasksTypes.rest
 
-      return {
-        type: TasksTypes.focus,
-        duration: focusTime
-      }
+      return isUserResting
+        ? makeRestTask({ duration: restTime })
+        : makeFocusTask({ duration: focusTime })
     })
   }, [focusTime, restTime])
 
   const onTimerEndReach = useCallback(() => {
     setCurrentTask(task => {
-      if (task.type === TasksTypes.rest) {
-        return {
-          type: TasksTypes.focus,
-          duration: focusTime
-        }
-      }
+      const wasUserResting = task.type === TasksTypes.rest
 
-      return {
-        type: TasksTypes.rest,
-        duration: restTime
-      }
+      return wasUserResting
+        ? makeFocusTask({ duration: focusTime })
+        : makeRestTask({ duration: restTime })
     })
   }, [focusTime, restTime])
 
