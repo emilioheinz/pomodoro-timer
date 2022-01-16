@@ -5,7 +5,8 @@ export const Container = styled.div<{ progressPercentage: number }>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
+  min-width: 275px;
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
@@ -40,9 +41,21 @@ export const TimeWrapper = styled.div`
   align-items: center;
 
   span {
-    font-size: 65px;
+    font-size: 95px;
     font-weight: bold;
     letter-spacing: 2px;
     color: ${props => props.theme.colors.text};
+  }
+
+  @media screen and (max-width: 750px) {
+    span {
+      font-size: 75px;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    span {
+      font-size: 60px;
+    }
   }
 `
