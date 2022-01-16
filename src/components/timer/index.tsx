@@ -1,19 +1,19 @@
-import { FaPlay, FaStop } from 'react-icons/fa'
+import { FaPlay, FaPause } from 'react-icons/fa'
 import { useTimerContext } from '~/contexts/timer'
 import { IconButton } from '../icon-button'
 import { Container, TimeWrapper } from './styles'
 
 export default function Timer() {
   const {
-    isTimerRunning,
-    reset,
+    pause,
     start,
+    isTimerRunning,
     formattedTimeLeft,
     progressPercentage
   } = useTimerContext()
 
   function renderButton() {
-    if (isTimerRunning) return <IconButton Icon={FaStop} onClick={reset} />
+    if (isTimerRunning) return <IconButton Icon={FaPause} onClick={pause} />
 
     return <IconButton Icon={FaPlay} onClick={start} />
   }

@@ -15,6 +15,7 @@ function TimerContextProvider({ children }: TimerContextProviderProps) {
   const {
     start,
     reset,
+    pause,
     setStartTime,
     isTimerRunning,
     formattedTimeLeft,
@@ -38,6 +39,7 @@ function TimerContextProvider({ children }: TimerContextProviderProps) {
   const providerValue: TimerContextValues = {
     start,
     reset,
+    pause,
     isTimerRunning,
     formattedTimeLeft,
     progressPercentage,

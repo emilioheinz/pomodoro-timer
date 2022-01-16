@@ -6,6 +6,7 @@ export type TimerContextValues = {
   progressPercentage: number
   start?: () => void
   reset?: () => void
+  pause?: () => void
   setOnEndReachCallback?: (cb?: () => void) => void
   setCurrentTaskDuration?: (duration: number) => void
 }

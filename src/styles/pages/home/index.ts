@@ -7,10 +7,11 @@ export const Container = styled.div`
   flex-wrap: wrap;
 `
 
-export const TimerContainer = styled.div`
+export const LeftContainer = styled.div`
   display: flex;
   flex: 5;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `
 
 export const RightContainer = styled.div`

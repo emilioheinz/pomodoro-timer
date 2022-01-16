@@ -27,7 +27,6 @@ export function useCountdownTimer() {
 
   useEffect(() => {
     if (hasReachedTheEnd && isTimerRunning) {
-      console.log('kek')
       onEndReachCallback?.()
     }
   }, [hasReachedTheEnd, onEndReachCallback])
