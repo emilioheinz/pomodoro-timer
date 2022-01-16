@@ -4,13 +4,16 @@ import { msToMinutesAndSeconds } from '~/utils/time'
 const ONE_SECOND_IN_MS = 1000
 const END_COUNTING_MS = 0
 
-export function useCountdownTimer(onEndReachCallback?: () => void) {
+export function useCountdownTimer() {
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [startTimeInMs, setStartTimeInMs] = useState(0)
   const [timeLeft, setTimeLeft] = useState(0)
   const [counterInterval, setCounterInterval] = useState<NodeJS.Timer | null>(
     null
   )
+  const [onEndReachCallback, _setOnEndReachCallback] = useState<() => void>()
+  const setOnEndReachCallback = (cb?: () => void) =>
+    _setOnEndReachCallback(() => cb)
 
   const hasReachedTheEnd = timeLeft <= END_COUNTING_MS
 
@@ -24,6 +27,7 @@ export function useCountdownTimer(onEndReachCallback?: () => void) {
 
   useEffect(() => {
     if (hasReachedTheEnd && isTimerRunning) {
+      console.log('kek')
       onEndReachCallback?.()
     }
   }, [hasReachedTheEnd, onEndReachCallback])
@@ -74,6 +78,7 @@ export function useCountdownTimer(onEndReachCallback?: () => void) {
     reset,
     setStartTime,
     isTimerRunning,
+    setOnEndReachCallback,
     timeLeftInMilliseconds: timeLeft,
     formattedTimeLeft: msToMinutesAndSeconds(timeLeft)
   }

@@ -7,6 +7,6 @@ export type IconProps = {
 
 export type IconButtonPropTypes = {
   Icon: IconType
-  onClick: () => void
+  onClick?: () => void
   isDisabled?: boolean
 }

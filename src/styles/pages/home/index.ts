@@ -4,6 +4,7 @@ export const Container = styled.div`
   display: flex;
   align-items: stretch;
   padding: 60px 35px;
+  flex-wrap: wrap;
 `
 
 export const TimerContainer = styled.div`
@@ -18,10 +19,6 @@ export const RightContainer = styled.div`
   flex-direction: column;
 `
 
-export const LeftContainer = styled.div`
-  display: flex;
-  flex: 2.5;
-`
 export const RangeInputLabelContainer = styled.div`
   display: flex;
   justify-content: space-between;

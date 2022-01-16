@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Container = styled.div<{ ranPercentage: number }>`
+export const Container = styled.div<{ progressPercentage: number }>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@ export const Container = styled.div<{ ranPercentage: number }>`
     border-radius: 50%;
     padding: 8px;
     background: ${props =>
-      `conic-gradient(${props.theme.colors.primary} ${props.ranPercentage}%, transparent 0%)`};
+      `conic-gradient(${props.theme.colors.primary} ${props.progressPercentage}%, transparent 0%)`};
     -webkit-mask: linear-gradient(#ffffff 0 0) content-box,
       linear-gradient(#ffffff 0 0);
     -webkit-mask-composite: xor;

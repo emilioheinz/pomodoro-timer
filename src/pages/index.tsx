@@ -1,14 +1,13 @@
 import Head from 'next/head'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import RangeSlider from '~/components/range-slider'
 import Timer from '~/components/timer'
+import { useTimerContext } from '~/contexts/timer'
 import { makeFocusTask } from '~/factories/focus-task'
 import { makeRestTask } from '~/factories/rest-task'
-import { useCountdownTimer } from '~/hooks/use-count-down-timer'
 
 import {
   Container,
-  LeftContainer,
   RangeInputLabelContainer,
   RightContainer,
   TimerContainer
@@ -24,11 +23,12 @@ const INITIAL_TASK: Task = {
 }
 
 export default function Home() {
+  const { isTimerRunning, setCurrentTaskDuration, setOnEndReachCallback } =
+    useTimerContext()
+
   const [currentTask, setCurrentTask] = useState<Task>(INITIAL_TASK)
   const [focusTime, setFocusTime] = useState(DEFAULT_FOCUS_TIME_IN_MINUTES)
   const [restTime, setRestTime] = useState(DEFAULT_REST_TIME_IN_MINUTES)
-
-  const currentTaskDurationInMs = minutesToMs(currentTask.duration)
 
   useEffect(() => {
     setCurrentTask(task => {
@@ -40,7 +40,7 @@ export default function Home() {
     })
   }, [focusTime, restTime])
 
-  const onTimerEndReach = useCallback(() => {
+  const onEndReach = useCallback(() => {
     setCurrentTask(task => {
       const wasUserResting = task.type === TasksTypes.rest
 
@@ -50,28 +50,13 @@ export default function Home() {
     })
   }, [focusTime, restTime])
 
-  const {
-    start,
-    reset,
-    setStartTime,
-    isTimerRunning,
-    formattedTimeLeft,
-    timeLeftInMilliseconds
-  } = useCountdownTimer(onTimerEndReach)
+  useEffect(() => {
+    setOnEndReachCallback?.(onEndReach)
+  }, [onEndReach])
 
   useEffect(() => {
-    setStartTime(minutesToMs(currentTask.duration))
+    setCurrentTaskDuration?.(minutesToMs(currentTask.duration))
   }, [currentTask.duration])
-
-  const ranPercentage = useMemo(
-    () =>
-      isTimerRunning
-        ? ((currentTaskDurationInMs - timeLeftInMilliseconds) /
-            currentTaskDurationInMs) *
-          100
-        : 0,
-    [currentTaskDurationInMs, timeLeftInMilliseconds, isTimerRunning]
-  )
 
   function renderRangeInputLabel(minutes: number, label: string) {
     return (
@@ -90,15 +75,8 @@ export default function Home() {
 
       <main>
         <Container>
-          <LeftContainer />
           <TimerContainer>
-            <Timer
-              isTimerRunning={isTimerRunning}
-              formattedTimeLeft={formattedTimeLeft}
-              start={start}
-              reset={reset}
-              ranPercentage={ranPercentage}
-            />
+            <Timer />
           </TimerContainer>
           <RightContainer>
             <RangeSlider

@@ -1,17 +1,17 @@
-import { useEffect, useMemo } from 'react'
 import { FaPlay, FaStop } from 'react-icons/fa'
-import { useCountdownTimer } from '~/hooks/use-count-down-timer'
+import { useTimerContext } from '~/contexts/timer'
 import { IconButton } from '../icon-button'
 import { Container, TimeWrapper } from './styles'
-import { TimerProps } from './types'
 
-export default function Timer({
-  formattedTimeLeft,
-  isTimerRunning,
-  ranPercentage,
-  start,
-  reset
-}: TimerProps) {
+export default function Timer() {
+  const {
+    isTimerRunning,
+    reset,
+    start,
+    formattedTimeLeft,
+    progressPercentage
+  } = useTimerContext()
+
   function renderButton() {
     if (isTimerRunning) return <IconButton Icon={FaStop} onClick={reset} />
 
@@ -19,7 +19,7 @@ export default function Timer({
   }
 
   return (
-    <Container ranPercentage={ranPercentage}>
+    <Container progressPercentage={progressPercentage}>
       <TimeWrapper>
         <span>{formattedTimeLeft}</span>
       </TimeWrapper>
