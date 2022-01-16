@@ -20,10 +20,10 @@ export function useCountdownTimer(onEndReachCallback?: () => void) {
       setCounterInterval(null)
       setIsTimerRunning(false)
     }
-  }, [hasReachedTheEnd, counterInterval])
+  }, [hasReachedTheEnd, counterInterval, isTimerRunning])
 
   useEffect(() => {
-    if (hasReachedTheEnd) {
+    if (hasReachedTheEnd && isTimerRunning) {
       onEndReachCallback?.()
     }
   }, [hasReachedTheEnd, onEndReachCallback])

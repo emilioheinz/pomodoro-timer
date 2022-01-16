@@ -10,3 +10,7 @@ export function msToMinutesAndSeconds(milliseconds: number) {
 
   return `${minutes}:${seconds}`
 }
+
+export function minutesToMs(minutes: number) {
+  return minutes * 60000
+}
