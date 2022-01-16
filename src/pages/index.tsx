@@ -1,9 +1,10 @@
 import Head from 'next/head'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import RangeSlider from '~/components/range-slider'
 import Timer from '~/components/timer'
 import { makeFocusTask } from '~/factories/focus-task'
 import { makeRestTask } from '~/factories/rest-task'
+import { useCountdownTimer } from '~/hooks/use-count-down-timer'
 
 import {
   Container,
@@ -27,6 +28,8 @@ export default function Home() {
   const [focusTime, setFocusTime] = useState(DEFAULT_FOCUS_TIME_IN_MINUTES)
   const [restTime, setRestTime] = useState(DEFAULT_REST_TIME_IN_MINUTES)
 
+  const currentTaskDurationInMs = minutesToMs(currentTask.duration)
+
   useEffect(() => {
     setCurrentTask(task => {
       const isUserResting = task.type === TasksTypes.rest
@@ -46,6 +49,29 @@ export default function Home() {
         : makeRestTask({ duration: restTime })
     })
   }, [focusTime, restTime])
+
+  const {
+    start,
+    reset,
+    setStartTime,
+    isTimerRunning,
+    formattedTimeLeft,
+    timeLeftInMilliseconds
+  } = useCountdownTimer(onTimerEndReach)
+
+  useEffect(() => {
+    setStartTime(minutesToMs(currentTask.duration))
+  }, [currentTask.duration])
+
+  const ranPercentage = useMemo(
+    () =>
+      isTimerRunning
+        ? ((currentTaskDurationInMs - timeLeftInMilliseconds) /
+            currentTaskDurationInMs) *
+          100
+        : 0,
+    [currentTaskDurationInMs, timeLeftInMilliseconds, isTimerRunning]
+  )
 
   function renderRangeInputLabel(minutes: number, label: string) {
     return (
@@ -67,8 +93,11 @@ export default function Home() {
           <LeftContainer />
           <TimerContainer>
             <Timer
-              startTimeInMs={minutesToMs(currentTask.duration)}
-              onEndReach={onTimerEndReach}
+              isTimerRunning={isTimerRunning}
+              formattedTimeLeft={formattedTimeLeft}
+              start={start}
+              reset={reset}
+              ranPercentage={ranPercentage}
             />
           </TimerContainer>
           <RightContainer>
@@ -77,12 +106,14 @@ export default function Home() {
               onChange={e => setFocusTime(Number(e.target.value))}
               currentValue={focusTime}
               renderLabel={() => renderRangeInputLabel(focusTime, 'Focus')}
+              isDisabled={isTimerRunning}
             />
             <RangeSlider
               range={[1, 120]}
               onChange={e => setRestTime(Number(e.target.value))}
               currentValue={restTime}
               renderLabel={() => renderRangeInputLabel(restTime, 'Rest')}
+              isDisabled={isTimerRunning}
             />
           </RightContainer>
         </Container>

@@ -1,4 +1,7 @@
 export type TimerProps = {
-  startTimeInMs: number
-  onEndReach: () => void
+  isTimerRunning: boolean
+  formattedTimeLeft: string
+  start: () => void
+  reset: () => void
+  ranPercentage: number
 }

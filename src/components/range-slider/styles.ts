@@ -17,6 +17,7 @@ export const Container = styled.div`
     width: 100%;
     outline: none;
     -webkit-appearance: none;
+    background-color: ${props => props.theme.colors.secondary};
 
     ::-webkit-slider-thumb {
       -webkit-appearance: none;
@@ -32,6 +33,12 @@ export const Container = styled.div`
         height: 25px;
         transition: 0.2s;
       }
+    }
+
+    :disabled {
+      background-color: ${props => props.theme.colors.secondary};
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
 `

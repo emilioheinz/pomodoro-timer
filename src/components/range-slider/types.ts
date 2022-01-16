@@ -6,4 +6,5 @@ export type RangeSliderProps = {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   renderLabel?: () => React.ReactElement
   currentValue: number
+  isDisabled?: boolean
 }

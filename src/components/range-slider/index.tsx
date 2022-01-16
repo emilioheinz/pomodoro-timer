@@ -6,7 +6,8 @@ export default function RangeSlider({
   onChange,
   renderLabel,
   currentValue,
-  stepsGap = 1
+  stepsGap = 1,
+  isDisabled = true
 }: RangeSliderProps) {
   return (
     <Container>
@@ -19,6 +20,7 @@ export default function RangeSlider({
         step={stepsGap}
         value={currentValue}
         onChange={onChange}
+        disabled={isDisabled}
       />
     </Container>
   )
