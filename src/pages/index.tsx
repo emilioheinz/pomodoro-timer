@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useCallback, useEffect, useState } from 'react'
 import RangeSlider from '~/components/range-slider'
 import Timer from '~/components/timer'
-import { makeFocusTask } from '~/factories/focust-task'
+import { makeFocusTask } from '~/factories/focus-task'
 import { makeRestTask } from '~/factories/rest-task'
 
 import {
