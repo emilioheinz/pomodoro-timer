@@ -17,6 +17,7 @@ export const RightContainer = styled.div`
   display: flex;
   flex: 2.5;
   flex-direction: column;
+  align-items: center;
 `
 
 export const RangeInputLabelContainer = styled.div`

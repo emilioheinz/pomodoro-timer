@@ -3,6 +3,8 @@ import styled from 'styled-components'
 export const Container = styled.div`
   width: 100%;
   margin: 16px 0;
+  max-width: 375px;
+  min-width: 200px;
 
   span {
     color: ${props => props.theme.colors.text};
