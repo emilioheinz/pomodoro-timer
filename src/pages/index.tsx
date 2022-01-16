@@ -36,10 +36,6 @@ export default function Home() {
   const [focusTime, setFocusTime] = useState(DEFAULT_FOCUS_TIME_IN_MINUTES)
   const [restTime, setRestTime] = useState(DEFAULT_REST_TIME_IN_MINUTES)
 
-  // useEffect(() => {
-  //   console.log(currentTask)
-  // }, [currentTask])
-
   const updateCurrentTaskDuration = useCallback(
     (taskTyke: TasksTypes) => {
       const isUserResting = taskTyke === TasksTypes.rest
