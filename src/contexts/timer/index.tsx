@@ -30,11 +30,9 @@ function TimerContextProvider({ children }: TimerContextProviderProps) {
   }, [currentTaskDuration])
 
   const progressPercentage = useMemo(() => {
-    if (!isTimerRunning) return 0
-
     const progress = currentTaskDuration - timeLeftInMilliseconds
     return (progress / currentTaskDuration) * 100
-  }, [currentTaskDuration, timeLeftInMilliseconds, isTimerRunning])
+  }, [timeLeftInMilliseconds])
 
   const providerValue: TimerContextValues = {
     start,
