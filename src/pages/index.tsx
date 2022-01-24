@@ -29,8 +29,12 @@ const options = [
 ]
 
 export default function Home() {
-  const { isTimerRunning, setCurrentTaskDuration, setOnEndReachCallback } =
-    useTimerContext()
+  const {
+    reset,
+    isTimerRunning,
+    setCurrentTaskDuration,
+    setOnEndReachCallback
+  } = useTimerContext()
 
   const [currentTask, setCurrentTask] = useState<Task>(INITIAL_TASK)
   const [focusTime, setFocusTime] = useState(DEFAULT_FOCUS_TIME_IN_MINUTES)
@@ -59,6 +63,7 @@ export default function Home() {
         ? makeFocusTask({ duration: focusTime })
         : makeRestTask({ duration: restTime })
     })
+    reset?.()
   }, [focusTime, restTime])
 
   useEffect(() => {
@@ -99,6 +104,7 @@ export default function Home() {
           onChange={e => setRestTime(Number(e.target.value))}
           currentValue={restTime}
           renderLabel={() => renderRangeInputLabel(restTime, 'Rest')}
+          stepsGap={0.1}
           isDisabled={isTimerRunning}
         />
       </RightContainer>
