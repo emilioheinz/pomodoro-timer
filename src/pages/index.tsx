@@ -92,19 +92,17 @@ export default function Home() {
     return (
       <RightContainer>
         <RangeSlider
-          range={[0.1, 120]}
+          range={[1, 120]}
           onChange={e => setFocusTime(Number(e.target.value))}
           currentValue={focusTime}
           renderLabel={() => renderRangeInputLabel(focusTime, 'Focus')}
           isDisabled={isTimerRunning}
-          stepsGap={0.1}
         />
         <RangeSlider
-          range={[0.1, 120]}
+          range={[1, 120]}
           onChange={e => setRestTime(Number(e.target.value))}
           currentValue={restTime}
           renderLabel={() => renderRangeInputLabel(restTime, 'Rest')}
-          stepsGap={0.1}
           isDisabled={isTimerRunning}
         />
       </RightContainer>
