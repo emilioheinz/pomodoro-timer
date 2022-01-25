@@ -7,13 +7,13 @@ export const Container = styled.div<{ progressPercentage: number }>`
   width: 100%;
   max-width: 500px;
   min-width: 275px;
-  aspect-ratio: 1;
+  aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   margin: 20px;
-  padding: 30px;
+  padding: 2.5rem;
   border: ${props => `8px solid ${props.theme.colors.primary30}`};
   box-shadow: ${props => `5px 5px 20px ${props.theme.colors.background}`};
 
