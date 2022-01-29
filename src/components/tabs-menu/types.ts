@@ -9,4 +9,5 @@ export type TabsMenuProps = {
   options: Array<Option>
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   checkedValue: number | string
+  isDisabled: boolean
 }

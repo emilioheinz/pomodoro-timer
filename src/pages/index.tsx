@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { useTimer } from 'react-timer-hook'
 import RangeSlider from '~/components/range-slider'
 import TabsMenu from '~/components/tabs-menu'
 import Timer from '~/components/timer'
-import { useTimerContext } from '~/contexts/timer'
 import { makeFocusTask } from '~/factories/focus-task'
 import { makeRestTask } from '~/factories/rest-task'
 
@@ -14,7 +14,7 @@ import {
   LeftContainer
 } from '~/styles/pages/home'
 import { Task, TasksTypes } from '~/types/task'
-import { minutesToMs } from '~/utils/time'
+import { getDateInTheFuture } from '~/utils/time'
 
 const DEFAULT_FOCUS_TIME_IN_MINUTES = 50
 const DEFAULT_REST_TIME_IN_MINUTES = 10
@@ -29,12 +29,34 @@ const options = [
 ]
 
 export default function Home() {
-  const { reset, isRunning, setCurrentTaskDuration, setOnEndReachCallback } =
-    useTimerContext()
-
   const [currentTask, setCurrentTask] = useState<Task>(INITIAL_TASK)
   const [focusTime, setFocusTime] = useState(DEFAULT_FOCUS_TIME_IN_MINUTES)
   const [restTime, setRestTime] = useState(DEFAULT_REST_TIME_IN_MINUTES)
+
+  const { hours, minutes, seconds, isRunning, pause, resume, restart } =
+    useTimer({
+      expiryTimestamp: getDateInTheFuture({ minutes: currentTask.duration }),
+      autoStart: false
+    })
+
+  useEffect(() => {
+    const date = getDateInTheFuture({ minutes: currentTask.duration })
+
+    restart(date)
+    pause()
+  }, [currentTask])
+
+  useEffect(() => {
+    if (currentTask.type !== TasksTypes.focus) return
+
+    setCurrentTask(updateCurrentTaskDuration(TasksTypes.focus))
+  }, [focusTime])
+
+  useEffect(() => {
+    if (currentTask.type !== TasksTypes.rest) return
+
+    setCurrentTask(updateCurrentTaskDuration(TasksTypes.rest))
+  }, [restTime])
 
   const updateCurrentTaskDuration = useCallback(
     (taskTyke: TasksTypes) => {
@@ -46,29 +68,6 @@ export default function Home() {
     },
     [restTime, focusTime]
   )
-
-  useEffect(() => {
-    setCurrentTask(task => updateCurrentTaskDuration(task.type))
-  }, [updateCurrentTaskDuration])
-
-  const onEndReach = useCallback(() => {
-    setCurrentTask(task => {
-      const wasUserResting = task.type === TasksTypes.rest
-
-      return wasUserResting
-        ? makeFocusTask({ duration: focusTime })
-        : makeRestTask({ duration: restTime })
-    })
-    reset?.()
-  }, [focusTime, restTime])
-
-  useEffect(() => {
-    setOnEndReachCallback?.(onEndReach)
-  }, [onEndReach])
-
-  useEffect(() => {
-    setCurrentTaskDuration?.(minutesToMs(currentTask.duration))
-  }, [currentTask.duration])
 
   function onTabsMenuValueChange(e: ChangeEvent<HTMLInputElement>) {
     const selectedTaskType = e.target.value as TasksTypes
@@ -117,8 +116,16 @@ export default function Home() {
               options={options}
               onChange={onTabsMenuValueChange}
               checkedValue={currentTask.type}
+              isDisabled={isRunning}
             />
-            <Timer />
+            <Timer
+              isRunning={isRunning}
+              hours={hours}
+              minutes={minutes}
+              seconds={seconds}
+              onPause={pause}
+              onResume={resume}
+            />
           </LeftContainer>
           {renderRightContainerWithConfig()}
         </Container>

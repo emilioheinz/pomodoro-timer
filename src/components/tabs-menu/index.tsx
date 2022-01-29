@@ -1,12 +1,11 @@
-import { ChangeEvent, useState } from 'react'
-import { TasksTypes } from '~/types/task'
 import { Container } from './styles'
 import { TabsMenuProps } from './types'
 
 export default function TabsMenu({
   options,
   onChange,
-  checkedValue
+  checkedValue,
+  isDisabled
 }: TabsMenuProps) {
   function renderTab(label: string, value: number | string) {
     return (
@@ -18,6 +17,7 @@ export default function TabsMenu({
           id={label + value}
           onChange={onChange}
           checked={checkedValue === value}
+          disabled={isDisabled}
         />
         <label htmlFor={label + value}>{label}</label>
       </div>

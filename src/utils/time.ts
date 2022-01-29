@@ -1,16 +1,33 @@
+type GetDateInTheFutureParams = {
+  minutes: number
+}
+
+type ToMinutesAndSecondsParams = {
+  hours: number
+  minutes: number
+  seconds: number
+}
+
 function validateMinLength(number: number) {
   if (number > 10) return `${number}`
 
   return `${number}`.padStart(2, '0')
 }
 
-export function msToMinutesAndSeconds(milliseconds: number) {
-  const minutes = validateMinLength(Math.floor(milliseconds / 60000))
-  const seconds = validateMinLength((milliseconds % 60000) / 1000)
-
-  return `${minutes}:${seconds}`
+export function toMinutesAndSeconds({
+  hours,
+  minutes,
+  seconds
+}: ToMinutesAndSecondsParams) {
+  return {
+    minutes: validateMinLength(minutes + hours * 60),
+    seconds: validateMinLength(seconds)
+  }
 }
 
-export function minutesToMs(minutes: number) {
-  return minutes * 60000
+export function getDateInTheFuture({ minutes }: GetDateInTheFutureParams) {
+  const data = new Date()
+  data.setMinutes(data.getMinutes() + minutes)
+
+  return data
 }
