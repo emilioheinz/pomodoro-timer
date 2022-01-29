@@ -1,4 +1,5 @@
 import { FaPlay, FaPause } from 'react-icons/fa'
+import useTimerProgressPercentage from '~/hooks/user-timer-progress-percentage'
 import { toMinutesAndSeconds } from '~/utils/time'
 
 import { IconButton } from '../icon-button'
@@ -10,11 +11,18 @@ export default function Timer({
   hours,
   minutes,
   seconds,
+  currentTaskDuration,
   onPause,
   onResume
 }: TimerProps) {
   const { minutes: formattedMinutes, seconds: formattedSeconds } =
     toMinutesAndSeconds({ hours, minutes, seconds })
+
+  const { getProgressPercentage } = useTimerProgressPercentage({
+    currentTaskDurationInMinutes: currentTaskDuration,
+    minutesLeft: Number(formattedMinutes),
+    secondsLeft: Number(formattedSeconds)
+  })
 
   function renderButton() {
     if (isRunning) return <IconButton Icon={FaPause} onClick={onPause} />
@@ -23,7 +31,7 @@ export default function Timer({
   }
 
   return (
-    <Container progressPercentage={10}>
+    <Container progressPercentage={getProgressPercentage()}>
       <TimeWrapper>
         <span>{`${formattedMinutes}:${formattedSeconds}`}</span>
       </TimeWrapper>

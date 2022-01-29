@@ -125,6 +125,7 @@ export default function Home() {
               seconds={seconds}
               onPause={pause}
               onResume={resume}
+              currentTaskDuration={currentTask.duration}
             />
           </LeftContainer>
           {renderRightContainerWithConfig()}
