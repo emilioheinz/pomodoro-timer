@@ -4,7 +4,7 @@ import { useCountdownTimer } from '~/hooks/use-count-down-timer'
 import { TimerContextProviderProps, TimerContextValues } from './types'
 
 const defaultValue: TimerContextValues = {
-  isTimerRunning: false,
+  isRunning: false,
   formattedTimeLeft: '00:00',
   progressPercentage: 0
 }
@@ -17,7 +17,7 @@ function TimerContextProvider({ children }: TimerContextProviderProps) {
     reset,
     pause,
     setStartTime,
-    isTimerRunning,
+    isRunning,
     formattedTimeLeft,
     setOnEndReachCallback,
     timeLeftInMilliseconds
@@ -38,7 +38,7 @@ function TimerContextProvider({ children }: TimerContextProviderProps) {
     start,
     reset,
     pause,
-    isTimerRunning,
+    isRunning,
     formattedTimeLeft,
     progressPercentage,
     setOnEndReachCallback,

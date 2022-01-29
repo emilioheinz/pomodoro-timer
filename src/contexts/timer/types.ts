@@ -1,7 +1,7 @@
 import React from 'react'
 
 export type TimerContextValues = {
-  isTimerRunning: boolean
+  isRunning: boolean
   formattedTimeLeft: string
   progressPercentage: number
   start?: () => void

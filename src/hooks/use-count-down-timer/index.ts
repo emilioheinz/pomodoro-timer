@@ -5,7 +5,7 @@ const ONE_SECOND_IN_MS = 1000
 const END_COUNTING_MS = 0
 
 export function useCountdownTimer() {
-  const [isTimerRunning, setIsTimerRunning] = useState(false)
+  const [isRunning, setisRunning] = useState(false)
   const [startTimeInMs, setStartTimeInMs] = useState(0)
   const [timeLeft, setTimeLeft] = useState(0)
   const [counterInterval, setCounterInterval] = useState<NodeJS.Timer | null>(
@@ -21,20 +21,20 @@ export function useCountdownTimer() {
     if (hasReachedTheEnd && counterInterval) {
       clearInterval(counterInterval)
       setCounterInterval(null)
-      setIsTimerRunning(false)
+      setisRunning(false)
     }
-  }, [hasReachedTheEnd, counterInterval, isTimerRunning])
+  }, [hasReachedTheEnd, counterInterval, isRunning])
 
   useEffect(() => {
-    if (hasReachedTheEnd && isTimerRunning) {
+    if (hasReachedTheEnd && isRunning) {
       onEndReachCallback?.()
     }
   }, [hasReachedTheEnd, onEndReachCallback])
 
   function start() {
-    if (isTimerRunning) return
+    if (isRunning) return
 
-    setIsTimerRunning(true)
+    setisRunning(true)
 
     const calculateRemainingTime = () => {
       setTimeLeft(t => t - ONE_SECOND_IN_MS)
@@ -47,7 +47,7 @@ export function useCountdownTimer() {
   }
 
   function pause() {
-    setIsTimerRunning(false)
+    setisRunning(false)
 
     if (!counterInterval) return
 
@@ -57,7 +57,7 @@ export function useCountdownTimer() {
   function reset() {
     setCounterInterval(null)
     setTimeLeft(startTimeInMs)
-    setIsTimerRunning(false)
+    setisRunning(false)
 
     if (!counterInterval) return
 
@@ -65,7 +65,7 @@ export function useCountdownTimer() {
   }
 
   function setStartTime(duration: number) {
-    if (isTimerRunning) return
+    if (isRunning) return
 
     setStartTimeInMs(duration)
     setTimeLeft(duration)
@@ -76,7 +76,7 @@ export function useCountdownTimer() {
     pause,
     reset,
     setStartTime,
-    isTimerRunning,
+    isRunning,
     setOnEndReachCallback,
     timeLeftInMilliseconds: timeLeft,
     formattedTimeLeft: msToMinutesAndSeconds(timeLeft)

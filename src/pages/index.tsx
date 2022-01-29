@@ -29,12 +29,8 @@ const options = [
 ]
 
 export default function Home() {
-  const {
-    reset,
-    isTimerRunning,
-    setCurrentTaskDuration,
-    setOnEndReachCallback
-  } = useTimerContext()
+  const { reset, isRunning, setCurrentTaskDuration, setOnEndReachCallback } =
+    useTimerContext()
 
   const [currentTask, setCurrentTask] = useState<Task>(INITIAL_TASK)
   const [focusTime, setFocusTime] = useState(DEFAULT_FOCUS_TIME_IN_MINUTES)
@@ -96,14 +92,14 @@ export default function Home() {
           onChange={e => setFocusTime(Number(e.target.value))}
           currentValue={focusTime}
           renderLabel={() => renderRangeInputLabel(focusTime, 'Focus')}
-          isDisabled={isTimerRunning}
+          isDisabled={isRunning}
         />
         <RangeSlider
           range={[1, 120]}
           onChange={e => setRestTime(Number(e.target.value))}
           currentValue={restTime}
           renderLabel={() => renderRangeInputLabel(restTime, 'Rest')}
-          isDisabled={isTimerRunning}
+          isDisabled={isRunning}
         />
       </RightContainer>
     )
