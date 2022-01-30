@@ -7,12 +7,13 @@ const BUTTON_SIZE = 48
 export function IconButton({
   Icon,
   onClick,
+  ariaLabel,
   isDisabled = false
 }: IconButtonPropTypes) {
   const theme = useTheme()
 
   return (
-    <Button onClick={onClick} disabled={isDisabled}>
+    <Button aria-label={ariaLabel} onClick={onClick} disabled={isDisabled}>
       <Icon size={BUTTON_SIZE} color={theme.colors.primary} />
     </Button>
   )

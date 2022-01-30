@@ -27,9 +27,14 @@ export default function Timer({
   })
 
   function renderButton() {
-    if (isRunning) return <IconButton Icon={FaPause} onClick={onPause} />
+    if (isRunning)
+      return (
+        <IconButton ariaLabel="Pause timer" Icon={FaPause} onClick={onPause} />
+      )
 
-    return <IconButton Icon={FaPlay} onClick={onResume} />
+    return (
+      <IconButton ariaLabel="Start timer" Icon={FaPlay} onClick={onResume} />
+    )
   }
 
   return (
