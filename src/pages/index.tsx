@@ -61,6 +61,27 @@ export default function Home() {
     )
   }
 
+  function renderLeftContainerWithTimerAndTabs() {
+    return (
+      <LeftContainer>
+        <TabsMenu
+          options={options}
+          onChange={onTabsMenuValueChange}
+          checkedValue={currentTask.type}
+          isDisabled={isRunning}
+        />
+        <Timer
+          isRunning={isRunning}
+          hours={hours}
+          minutes={minutes}
+          seconds={seconds}
+          onPause={pause}
+          onResume={resume}
+        />
+      </LeftContainer>
+    )
+  }
+
   function renderRightContainerWithConfig() {
     return (
       <RightContainer>
@@ -89,22 +110,7 @@ export default function Home() {
       </Head>
       <main>
         <Container>
-          <LeftContainer>
-            <TabsMenu
-              options={options}
-              onChange={onTabsMenuValueChange}
-              checkedValue={currentTask.type}
-              isDisabled={isRunning}
-            />
-            <Timer
-              isRunning={isRunning}
-              hours={hours}
-              minutes={minutes}
-              seconds={seconds}
-              onPause={pause}
-              onResume={resume}
-            />
-          </LeftContainer>
+          {renderLeftContainerWithTimerAndTabs()}
           {renderRightContainerWithConfig()}
         </Container>
       </main>
