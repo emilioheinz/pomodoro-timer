@@ -91,6 +91,7 @@ export default function Home() {
           currentValue={focusTime}
           renderLabel={() => renderRangeInputLabel(focusTime, 'Focus')}
           isDisabled={isRunning}
+          id="focus-range-slider"
         />
         <RangeSlider
           range={[1, 120]}
@@ -98,6 +99,7 @@ export default function Home() {
           currentValue={restTime}
           renderLabel={() => renderRangeInputLabel(restTime, 'Rest')}
           isDisabled={isRunning}
+          id="rest-range-slider"
         />
       </RightContainer>
     )

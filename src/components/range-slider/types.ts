@@ -7,4 +7,5 @@ export type RangeSliderProps = {
   renderLabel?: () => React.ReactElement
   currentValue: number
   isDisabled?: boolean
+  id: string
 }

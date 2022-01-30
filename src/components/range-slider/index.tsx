@@ -2,6 +2,7 @@ import { Container } from './styles'
 import { RangeSliderProps } from './types'
 
 export default function RangeSlider({
+  id,
   range,
   onChange,
   renderLabel,
@@ -11,7 +12,7 @@ export default function RangeSlider({
 }: RangeSliderProps) {
   return (
     <Container>
-      {renderLabel?.()}
+      <label htmlFor={id}>{renderLabel?.()}</label>
       <input
         type="range"
         className="slider"
@@ -21,6 +22,7 @@ export default function RangeSlider({
         value={currentValue}
         onChange={onChange}
         disabled={isDisabled}
+        id={id}
       />
     </Container>
   )
