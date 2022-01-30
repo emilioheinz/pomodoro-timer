@@ -15,13 +15,13 @@ import {
 } from '~/styles/pages/home'
 import { Task, TasksTypes } from '~/types/task'
 import { getDateInTheFuture } from '~/utils/time'
-
-const DEFAULT_FOCUS_TIME_IN_MINUTES = 50
-const DEFAULT_REST_TIME_IN_MINUTES = 10
-const INITIAL_TASK: Task = {
-  type: TasksTypes.focus,
-  duration: DEFAULT_FOCUS_TIME_IN_MINUTES
-}
+import {
+  DEFAULT_FOCUS_TIME_IN_MINUTES,
+  DEFAULT_REST_TIME_IN_MINUTES,
+  DELAY_BETWEEN_TASKS_IN_MS,
+  INITIAL_TASK
+} from '~/contants'
+import { notifyFocusEnd, notifyRestEnd } from '~/utils/notifications'
 
 const options = [
   { value: TasksTypes.focus, label: 'Focus' },
@@ -36,7 +36,8 @@ export default function Home() {
   const { hours, minutes, seconds, isRunning, pause, resume, restart } =
     useTimer({
       expiryTimestamp: getDateInTheFuture({ minutes: currentTask.duration }),
-      autoStart: false
+      autoStart: false,
+      onExpire: onTimerEndReach
     })
 
   useEffect(() => {
@@ -57,6 +58,20 @@ export default function Home() {
 
     setCurrentTask(updateCurrentTaskDuration(TasksTypes.rest))
   }, [restTime])
+
+  function onTimerEndReach() {
+    if (currentTask.type === TasksTypes.focus) {
+      notifyFocusEnd()
+      setTimeout(() => {
+        setCurrentTask(makeRestTask({ duration: restTime }))
+      }, DELAY_BETWEEN_TASKS_IN_MS)
+    } else if (currentTask.type === TasksTypes.rest) {
+      notifyRestEnd()
+      setTimeout(() => {
+        setCurrentTask(makeFocusTask({ duration: focusTime }))
+      }, DELAY_BETWEEN_TASKS_IN_MS)
+    }
+  }
 
   const updateCurrentTaskDuration = useCallback(
     (taskTyke: TasksTypes) => {
