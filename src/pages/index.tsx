@@ -108,7 +108,11 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Pomodoro Timer</title>
+        <title>Pomodoro Time Tracker</title>
+        <meta
+          name="description"
+          content="Tired of not having focus? Try Pomodoro Time Tracker, it is a flexible and easy to use online Pomodoro Technique Time Tracker."
+        />
       </Head>
       <main>
         <Container>
