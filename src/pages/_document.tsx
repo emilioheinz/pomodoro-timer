@@ -40,10 +40,9 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <link
-            href="https://fonts.googleapis.com/css?family=Roboto"
+            href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
             rel="stylesheet"
           />
-          {/* Todo emilioheinz: Add fivicon */}
         </Head>
         <body>
           <Main />
