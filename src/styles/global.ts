@@ -16,5 +16,6 @@ export default createGlobalStyle`
      `linear-gradient(to bottom right, ${props.theme.colors.background}, ${props.theme.colors.secondaryBackground})`};
 
    font: 400 16px Roboto, sans-serif;
+   font-display: swap;
  }
 `
