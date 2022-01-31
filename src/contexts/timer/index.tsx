@@ -7,10 +7,10 @@ import { useTimerConfig } from '../timer-config'
 
 import { TimerContextProviderProps, TimerContextValues } from './types'
 import { getDateInTheFuture, toMinutesAndSeconds } from '~/utils/time'
-import { notifyFocusEnd, notifyRestEnd } from '~/utils/notifications'
 import { makeRestTask } from '~/factories/rest-task'
 import { makeFocusTask } from '~/factories/focus-task'
-import useTimerProgressPercentage from '~/hooks/user-timer-progress-percentage'
+import useTimerProgressPercentage from '~/hooks/use-timer-progress-percentage'
+import useToast from '~/hooks/use-toast'
 
 const defaultValue: TimerContextValues = {
   currentTask: INITIAL_TASK,
@@ -27,6 +27,7 @@ const TimerContext = React.createContext(defaultValue)
 function TimerContextProvider({ children }: TimerContextProviderProps) {
   const [currentTask, setCurrentTask] = useState<Task>(INITIAL_TASK)
 
+  const { notifyFocusEnd, notifyRestEnd } = useToast()
   const { focusTime, restTime, getTaskByType } = useTimerConfig()
   const { hours, minutes, seconds, isRunning, pause, restart, resume } =
     useReactTimerHookTimer({

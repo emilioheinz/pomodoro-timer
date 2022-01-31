@@ -15,13 +15,29 @@ import { TasksTypes } from '~/types/task'
 
 import { useTimerConfig } from '~/contexts/timer-config'
 import { useTimer } from '~/contexts/timer'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticPropsContext } from 'next'
+import IntlNamespaces from '~/enums/intl-namespaces'
 
-const options = [
-  { value: TasksTypes.focus, label: 'Focus' },
-  { value: TasksTypes.rest, label: 'Rest' }
-]
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  const translationProps = await serverSideTranslations(locale as string, [
+    IntlNamespaces.home,
+    IntlNamespaces.common
+  ])
+
+  return {
+    props: {
+      ...translationProps
+    }
+  }
+}
 
 export default function Home() {
+  const { locale } = useRouter()
+  const { t } = useTranslation([IntlNamespaces.home, IntlNamespaces.common])
+
   const { focusTime, restTime, setFocusTime, setRestTime, getTaskByType } =
     useTimerConfig()
 
@@ -43,13 +59,26 @@ export default function Home() {
   function renderRangeInputLabel(minutes: number, label: string) {
     return (
       <RangeInputLabelContainer>
-        <span>{`${minutes} min`}</span>
+        <span>{`${minutes} ${t('time.minutes-abbreviation', {
+          ns: IntlNamespaces.common
+        })}`}</span>
         <span>{label}</span>
       </RangeInputLabelContainer>
     )
   }
 
   function renderLeftContainerWithTimerAndTabs() {
+    const options = [
+      {
+        value: TasksTypes.focus,
+        label: t('focus', { ns: IntlNamespaces.common })
+      },
+      {
+        value: TasksTypes.rest,
+        label: t('rest', { ns: IntlNamespaces.common })
+      }
+    ]
+
     return (
       <LeftContainer>
         <TabsMenu
@@ -76,7 +105,12 @@ export default function Home() {
           range={[1, 120]}
           onChange={e => setFocusTime(Number(e.target.value))}
           currentValue={focusTime}
-          renderLabel={() => renderRangeInputLabel(focusTime, 'Focus')}
+          renderLabel={() =>
+            renderRangeInputLabel(
+              focusTime,
+              t('focus', { ns: IntlNamespaces.common })
+            )
+          }
           isDisabled={isRunning}
           id="focus-range-slider"
         />
@@ -84,7 +118,12 @@ export default function Home() {
           range={[1, 120]}
           onChange={e => setRestTime(Number(e.target.value))}
           currentValue={restTime}
-          renderLabel={() => renderRangeInputLabel(restTime, 'Rest')}
+          renderLabel={() =>
+            renderRangeInputLabel(
+              restTime,
+              t('rest', { ns: IntlNamespaces.common })
+            )
+          }
           isDisabled={isRunning}
           id="rest-range-slider"
         />
@@ -97,8 +136,9 @@ export default function Home() {
       <Head>
         <title>Pomodoro Time Tracker</title>
         <meta
+          lang={locale}
           name="description"
-          content="Tired of not having focus? Try Pomodoro Time Tracker, it is a flexible and easy to use online Pomodoro Technique Time Tracker."
+          content={t('meta.description')}
         />
       </Head>
       <main>
