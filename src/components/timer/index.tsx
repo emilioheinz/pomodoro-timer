@@ -1,5 +1,5 @@
 import { FaPlay, FaPause } from 'react-icons/fa'
-import { useTimerContext } from '~/contexts/timer'
+import { useTimerConfig } from '~/contexts/timer-config'
 import useTimerProgressPercentage from '~/hooks/user-timer-progress-percentage'
 import { toMinutesAndSeconds } from '~/utils/time'
 
@@ -13,15 +13,14 @@ export default function Timer({
   minutes,
   seconds,
   onPause,
-  onResume
+  onResume,
+  currentTaskDuration
 }: TimerProps) {
-  const { currentTask } = useTimerContext()
-
   const { minutes: formattedMinutes, seconds: formattedSeconds } =
     toMinutesAndSeconds({ hours, minutes, seconds })
 
   const { getProgressPercentage } = useTimerProgressPercentage({
-    currentTaskDurationInMinutes: currentTask.duration,
+    currentTaskDurationInMinutes: currentTaskDuration,
     minutesLeft: Number(formattedMinutes),
     secondsLeft: Number(formattedSeconds)
   })

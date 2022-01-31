@@ -5,4 +5,5 @@ export type TimerProps = {
   seconds: number
   onPause: () => void
   onResume: () => void
+  currentTaskDuration: number
 }

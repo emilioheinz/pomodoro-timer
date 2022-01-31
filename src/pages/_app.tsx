@@ -4,16 +4,16 @@ import { ThemeProvider } from 'styled-components'
 import GlobalStyle from '../styles/global'
 import theme from '../styles/theme'
 import Toast from '~/components/toast'
-import { TimerContextProvider } from '~/contexts/timer'
+import { TimerConfigContextProvider } from '~/contexts/timer-config'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
-      <TimerContextProvider>
+      <TimerConfigContextProvider>
         <Component {...pageProps} />
         <GlobalStyle />
         <Toast />
-      </TimerContextProvider>
+      </TimerConfigContextProvider>
     </ThemeProvider>
   )
 }

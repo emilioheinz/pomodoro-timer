@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { ChangeEvent, useEffect } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useTimer } from 'react-timer-hook'
 import RangeSlider from '~/components/range-slider'
 import TabsMenu from '~/components/tabs-menu'
@@ -11,10 +11,14 @@ import {
   RightContainer,
   LeftContainer
 } from '~/styles/pages/home'
-import { TasksTypes } from '~/types/task'
+import { Task, TasksTypes } from '~/types/task'
 import { getDateInTheFuture } from '~/utils/time'
 
-import { useTimerContext } from '~/contexts/timer'
+import { useTimerConfig } from '~/contexts/timer-config'
+import { DELAY_BETWEEN_TASKS_IN_MS, INITIAL_TASK } from '~/contants'
+import { notifyFocusEnd, notifyRestEnd } from '~/utils/notifications'
+import { makeRestTask } from '~/factories/rest-task'
+import { makeFocusTask } from '~/factories/focus-task'
 
 const options = [
   { value: TasksTypes.focus, label: 'Focus' },
@@ -22,16 +26,10 @@ const options = [
 ]
 
 export default function Home() {
-  const {
-    currentTask,
-    focusTime,
-    restTime,
-    setFocusTime,
-    setRestTime,
-    onTimerEndReach,
-    setCurrentTask,
-    getTaskByType
-  } = useTimerContext()
+  const [currentTask, setCurrentTask] = useState<Task>(INITIAL_TASK)
+
+  const { focusTime, restTime, setFocusTime, setRestTime, getTaskByType } =
+    useTimerConfig()
 
   const { hours, minutes, seconds, isRunning, pause, resume, restart } =
     useTimer({
@@ -41,11 +39,37 @@ export default function Home() {
     })
 
   useEffect(() => {
+    if (currentTask.type !== TasksTypes.focus) return
+
+    setCurrentTask(getTaskByType(TasksTypes.focus))
+  }, [focusTime])
+
+  useEffect(() => {
+    if (currentTask.type !== TasksTypes.rest) return
+
+    setCurrentTask(getTaskByType(TasksTypes.rest))
+  }, [restTime])
+
+  useEffect(() => {
     const date = getDateInTheFuture({ minutes: currentTask.duration })
 
     restart(date)
     pause()
   }, [currentTask])
+
+  function onTimerEndReach() {
+    if (currentTask.type === TasksTypes.focus) {
+      notifyFocusEnd()
+      setTimeout(() => {
+        setCurrentTask(makeRestTask({ duration: restTime }))
+      }, DELAY_BETWEEN_TASKS_IN_MS)
+    } else if (currentTask.type === TasksTypes.rest) {
+      notifyRestEnd()
+      setTimeout(() => {
+        setCurrentTask(makeFocusTask({ duration: focusTime }))
+      }, DELAY_BETWEEN_TASKS_IN_MS)
+    }
+  }
 
   function onTabsMenuValueChange(e: ChangeEvent<HTMLInputElement>) {
     const selectedTaskType = e.target.value as TasksTypes
@@ -77,6 +101,7 @@ export default function Home() {
           seconds={seconds}
           onPause={pause}
           onResume={resume}
+          currentTaskDuration={currentTask.duration}
         />
       </LeftContainer>
     )
