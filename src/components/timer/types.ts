@@ -1,9 +1,7 @@
 export type TimerProps = {
   isRunning: boolean
-  hours: number
-  minutes: number
-  seconds: number
-  onPause: () => void
-  onResume: () => void
-  currentTaskDuration: number
+  formattedTimeLeft: string
+  onPauseClick: () => void
+  onResumeClick: () => void
+  progressPercentage: number
 }
