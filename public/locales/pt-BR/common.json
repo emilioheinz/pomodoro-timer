@@ -3,5 +3,16 @@
   "rest": "Descanso",
   "time": {
     "minutes-abbreviation": "min"
+  },
+
+  "home": {
+    "meta": {
+      "description": "Cansado de não ter foco? Experimente utilizar o Pomodoro Time Tracker, uma ferramente online, simples e flexível para controlar o seu tempo com a técnica Pomodoro."
+    }
+  },
+
+  "toast": {
+    "focus-time-ended": "Seu período de foco terminou. Iniciando período de descanso.",
+    "rest-time-ended": "Seu período de descanso terminou. Iniciando período de foco."
   }
 }

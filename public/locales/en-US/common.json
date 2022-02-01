@@ -3,5 +3,16 @@
   "rest": "Rest",
   "time": {
     "minutes-abbreviation": "min"
+  },
+
+  "home": {
+    "meta": {
+      "description": "Tired of not having focus? Try Pomodoro Time Tracker, it is a flexible and easy to use online Pomodoro Technique Time Tracker."
+    }
+  },
+
+  "toast": {
+    "focus-time-ended": "Your focus time ended. Starting rest time.",
+    "rest-time-ended": "Your rest time ended. Starting focus time."
   }
 }

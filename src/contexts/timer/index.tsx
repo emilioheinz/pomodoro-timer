@@ -45,6 +45,7 @@ function TimerContextProvider({ children }: TimerContextProviderProps) {
   })
 
   useEffect(() => {
+    notifyFocusEnd()
     const date = getDateInTheFuture({ minutes: currentTask.duration })
 
     restart(date)

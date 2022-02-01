@@ -19,13 +19,9 @@ import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticPropsContext } from 'next'
-import IntlNamespaces from '~/enums/intl-namespaces'
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  const translationProps = await serverSideTranslations(locale as string, [
-    IntlNamespaces.home,
-    IntlNamespaces.common
-  ])
+  const translationProps = await serverSideTranslations(locale as string)
 
   return {
     props: {
@@ -36,7 +32,7 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
 
 export default function Home() {
   const { locale } = useRouter()
-  const { t } = useTranslation([IntlNamespaces.home, IntlNamespaces.common])
+  const { t } = useTranslation()
 
   const { focusTime, restTime, setFocusTime, setRestTime, getTaskByType } =
     useTimerConfig()
@@ -59,9 +55,7 @@ export default function Home() {
   function renderRangeInputLabel(minutes: number, label: string) {
     return (
       <RangeInputLabelContainer>
-        <span>{`${minutes} ${t('time.minutes-abbreviation', {
-          ns: IntlNamespaces.common
-        })}`}</span>
+        <span>{`${minutes} ${t('time.minutes-abbreviation')}`}</span>
         <span>{label}</span>
       </RangeInputLabelContainer>
     )
@@ -71,11 +65,11 @@ export default function Home() {
     const options = [
       {
         value: TasksTypes.focus,
-        label: t('focus', { ns: IntlNamespaces.common })
+        label: t('focus')
       },
       {
         value: TasksTypes.rest,
-        label: t('rest', { ns: IntlNamespaces.common })
+        label: t('rest')
       }
     ]
 
@@ -105,12 +99,7 @@ export default function Home() {
           range={[1, 120]}
           onChange={e => setFocusTime(Number(e.target.value))}
           currentValue={focusTime}
-          renderLabel={() =>
-            renderRangeInputLabel(
-              focusTime,
-              t('focus', { ns: IntlNamespaces.common })
-            )
-          }
+          renderLabel={() => renderRangeInputLabel(focusTime, t('focus'))}
           isDisabled={isRunning}
           id="focus-range-slider"
         />
@@ -118,12 +107,7 @@ export default function Home() {
           range={[1, 120]}
           onChange={e => setRestTime(Number(e.target.value))}
           currentValue={restTime}
-          renderLabel={() =>
-            renderRangeInputLabel(
-              restTime,
-              t('rest', { ns: IntlNamespaces.common })
-            )
-          }
+          renderLabel={() => renderRangeInputLabel(restTime, t('rest'))}
           isDisabled={isRunning}
           id="rest-range-slider"
         />
@@ -138,7 +122,7 @@ export default function Home() {
         <meta
           lang={locale}
           name="description"
-          content={t('meta.description')}
+          content={t('home.meta.description')}
         />
       </Head>
       <main>
