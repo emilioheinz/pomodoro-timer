@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useCallback, useContext, useState } from 'react'
 import {
+  DEFAULT_ALERTS_SOUND_VOLUME,
   DEFAULT_FOCUS_TIME_IN_MINUTES,
   DEFAULT_REST_TIME_IN_MINUTES
 } from '~/contants'
@@ -13,7 +14,9 @@ import {
   TimerConfigContextValues
 } from './types'
 
-const defaultValue: TimerConfigContextValues = {
+const initialState: TimerConfigContextValues = {
+  alertsSoundVolume: DEFAULT_ALERTS_SOUND_VOLUME,
+  setAlertsSoundVolume: volume => volume,
   focusTime: DEFAULT_FOCUS_TIME_IN_MINUTES,
   setFocusTime: time => time,
   restTime: DEFAULT_REST_TIME_IN_MINUTES,
@@ -24,13 +27,16 @@ const defaultValue: TimerConfigContextValues = {
       : makeRestTask({ duration: DEFAULT_REST_TIME_IN_MINUTES })
 }
 
-const TimerConfigContext = React.createContext(defaultValue)
+const TimerConfigContext = React.createContext(initialState)
 
 function TimerConfigContextProvider({
   children
 }: TimerConfigContextProviderProps) {
-  const [focusTime, setFocusTime] = useState(DEFAULT_FOCUS_TIME_IN_MINUTES)
-  const [restTime, setRestTime] = useState(DEFAULT_REST_TIME_IN_MINUTES)
+  const [focusTime, setFocusTime] = useState(initialState.focusTime)
+  const [restTime, setRestTime] = useState(initialState.restTime)
+  const [alertsSoundVolume, setAlertsSoundVolume] = useState(
+    initialState.alertsSoundVolume
+  )
 
   const getTaskByType = useCallback(
     (taskTyke: TasksTypes) => {
@@ -44,6 +50,8 @@ function TimerConfigContextProvider({
   )
 
   const providerValue: TimerConfigContextValues = {
+    alertsSoundVolume,
+    setAlertsSoundVolume,
     focusTime,
     setFocusTime,
     restTime,

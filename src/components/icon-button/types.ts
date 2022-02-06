@@ -10,4 +10,6 @@ export type IconButtonPropTypes = {
   onClick?: () => void
   isDisabled?: boolean
   ariaLabel: string
+  size?: number
+  color?: string
 }

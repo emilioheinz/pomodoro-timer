@@ -7,6 +7,8 @@ export type TimerConfigContextValues = {
   restTime: number
   setRestTime: (time: number) => void
   getTaskByType: (type: TasksTypes) => Task
+  alertsSoundVolume: number
+  setAlertsSoundVolume: (volume: number) => void
 }
 
 export type TimerConfigContextProviderProps = {

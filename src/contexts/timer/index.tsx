@@ -4,6 +4,7 @@ import { DELAY_BETWEEN_TASKS_IN_MS, INITIAL_TASK } from '~/contants'
 import { useTimer as useReactTimerHookTimer } from 'react-timer-hook'
 import { Task, TasksTypes } from '~/types/task'
 import { useTimerConfig } from '../timer-config'
+import iPhoneAlarmSound from '~/assets/sounds/iphone-alarm.mp3'
 
 import { TimerContextProviderProps, TimerContextValues } from './types'
 import { getDateInTheFuture, toMinutesAndSeconds } from '~/utils/time'
@@ -11,6 +12,7 @@ import { makeRestTask } from '~/factories/rest-task'
 import { makeFocusTask } from '~/factories/focus-task'
 import useTimerProgressPercentage from '~/hooks/use-timer-progress-percentage'
 import useToast from '~/hooks/use-toast'
+import useSound from 'use-sound'
 
 const defaultValue: TimerContextValues = {
   currentTask: INITIAL_TASK,
@@ -28,13 +30,17 @@ function TimerContextProvider({ children }: TimerContextProviderProps) {
   const [currentTask, setCurrentTask] = useState<Task>(INITIAL_TASK)
 
   const { notifyFocusEnd, notifyRestEnd } = useToast()
-  const { focusTime, restTime, getTaskByType } = useTimerConfig()
+  const { focusTime, restTime, getTaskByType, alertsSoundVolume } =
+    useTimerConfig()
   const { hours, minutes, seconds, isRunning, pause, restart, resume } =
     useReactTimerHookTimer({
       expiryTimestamp: getDateInTheFuture({ minutes: currentTask.duration }),
       autoStart: false,
       onExpire: onTimerEndReach
     })
+  const [playSound, { stop }] = useSound(iPhoneAlarmSound, {
+    volume: alertsSoundVolume / 100
+  })
 
   const { minutes: formattedMinutes, seconds: formattedSeconds } =
     toMinutesAndSeconds({ hours, minutes, seconds })
@@ -64,15 +70,18 @@ function TimerContextProvider({ children }: TimerContextProviderProps) {
   }, [restTime])
 
   function onTimerEndReach() {
+    playSound()
     if (currentTask.type === TasksTypes.focus) {
       notifyFocusEnd()
       setTimeout(() => {
         setCurrentTask(makeRestTask({ duration: restTime }))
+        stop()
       }, DELAY_BETWEEN_TASKS_IN_MS)
     } else if (currentTask.type === TasksTypes.rest) {
       notifyRestEnd()
       setTimeout(() => {
         setCurrentTask(makeFocusTask({ duration: focusTime }))
+        stop()
       }, DELAY_BETWEEN_TASKS_IN_MS)
     }
   }

@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticPropsContext } from 'next'
+import VolumeController from '~/components/volume-controller'
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   const translationProps = await serverSideTranslations(locale as string)
@@ -34,8 +35,15 @@ export default function Home() {
   const { locale } = useRouter()
   const { t } = useTranslation()
 
-  const { focusTime, restTime, setFocusTime, setRestTime, getTaskByType } =
-    useTimerConfig()
+  const {
+    alertsSoundVolume,
+    setAlertsSoundVolume,
+    focusTime,
+    restTime,
+    setFocusTime,
+    setRestTime,
+    getTaskByType
+  } = useTimerConfig()
 
   const {
     progressPercentage,
@@ -110,6 +118,10 @@ export default function Home() {
           renderLabel={() => renderRangeInputLabel(restTime, t('rest'))}
           isDisabled={isRunning}
           id="rest-range-slider"
+        />
+        <VolumeController
+          onVolumeChange={setAlertsSoundVolume}
+          volume={alertsSoundVolume}
         />
       </RightContainer>
     )
